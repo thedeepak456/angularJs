@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <title>Total Marks</title>
+    <style>
+        form input{
+            display: block;
+            width: 120px;
+        }
+    </style>
+</head>
+
+<body ng-app>
+
+<div class="form">
+    <form>
+        <input type="text" placeholder="Enter Your Name" ng-model="name">
+
+        <input type="number" placeholder="Hindi Marks" ng-model="hindi" min="0" max="100">
+        <input type="number" placeholder="English Marks" ng-model="english" min="0" max="100">
+        <input type="number" placeholder="Maths Marks" ng-model="math" min="0" max="100">
+        <input type="number" placeholder="Science Marks" ng-model="science" min="0" max="100">
+        <input type="number" placeholder="SST Marks" ng-model="sst" min="0" max="100">
+    </form>
+
+    <div class="result">
+        <h2>Name: {{name}}</h2>
+
+        <h2>
+            Total Marks:
+            {{ total = (hindi||0) + (english||0) + (math||0) + (science||0) + (sst||0) }}
+        </h2>
+
+        <h2>
+            Percentage:
+            {{ percentage = (total / 500) * 100 | number:2 }}%
+        </h2>
+
+        <!-- PASS / FAIL -->
+        <p ng-if="percentage >= 40">You Passed ✅</p>
+        <p ng-if="percentage < 40">You Failed ❌</p>
+    </div>
+</div>
+
+</body>
+</html>
