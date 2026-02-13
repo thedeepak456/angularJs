@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body>
+
+<input type="number" ng-model="percentage" placeholder="Enter %" />
+
+<!-- create value -->
+{{ grade =
+   percentage > 100 ? 'Invalid' :
+   percentage >= 90 ? 'A+' :
+   percentage >= 80 ? 'A'  :
+   percentage >= 70 ? 'B'  :
+   percentage >= 60 ? 'C'  :
+   percentage >= 40 ? 'D'  :
+   percentage >= 1 ? 'F'  : 'Enter value'
+}}
+
+<!-- SWITCH CASE -->
+<!-- <h2 ng-switch="grade">
+  <span ng-switch-when="A+">Grade A+</span>
+  <span ng-switch-when="A">Grade A</span>
+  <span ng-switch-when="B">Grade B</span>
+  <span ng-switch-when="C">Grade C</span>
+  <span ng-switch-when="D">Grade D</span>
+  <span ng-switch-default>Grade F</span>
+</h2> -->
+
+</body>
+</html>

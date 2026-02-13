@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <title>Total Marks</title>
+    <title>Total Marks with Grade</title>
+
     <style>
-        form input{
+        body { font-family: Arial, sans-serif; }
+        form input {
             display: block;
-            width: 120px;
+            width: 150px;
+            margin-bottom: 8px;
         }
+        .result { margin-top: 20px; }
+        .pass { color: green; }
+        .fail { color: red; }
     </style>
 </head>
 
@@ -27,7 +33,7 @@
     </form>
 
     <div class="result">
-        <h2>Name: {{name}}</h2>
+        <h2>Name: {{ name }}</h2>
 
         <h2>
             Total Marks:
@@ -40,8 +46,20 @@
         </h2>
 
         <!-- PASS / FAIL -->
-        <p ng-if="percentage >= 40">You Passed ✅</p>
-        <p ng-if="percentage < 40">You Failed ❌</p>
+        <p ng-if="percentage < 100" class="fail">Invalid value ✅</p>
+        <p ng-if="percentage >= 40 && percentage <= 100" class="pass">You Passed ✅</p>
+        <p ng-if="percentage < 40 && percentage > 0" class="fail">You Failed ❌</p>
+        <p ng-if="percentage < 0" class="pass">Invalid value ✅</p>
+
+        <!-- GRADE -->
+        <h2>Grade:
+            <span ng-if="percentage >= 90">A+</span>
+            <span ng-if="percentage >= 80 && percentage < 90">A</span>
+            <span ng-if="percentage >= 70 && percentage < 80">B</span>
+            <span ng-if="percentage >= 60 && percentage < 70">C</span>
+            <span ng-if="percentage >= 40 && percentage < 60">D</span>
+            <span ng-if="percentage < 40">F</span>
+        </h2>
     </div>
 </div>
 
