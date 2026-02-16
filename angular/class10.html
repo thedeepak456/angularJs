@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  </head>
+
+  <body ng-app="myApp" ng-controller="myCtrl">
+    <input type="text" ng-model="name" ng-change="updateMessage()" />
+    <p>{{ message }}</p>
+
+    <script>
+      const app = angular.module("myApp", []);
+
+      app.controller("myCtrl", function ($scope) {
+        $scope.name = "";
+        $scope.message = "";
+
+        $scope.updateMessage = function () {
+          $scope.message = $scope.name;
+        };
+      });
+    </script>
+  </body>
+</html>

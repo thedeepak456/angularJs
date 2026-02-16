@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <title>AngularJS Example</title>
+</head>
+<body ng-app="myApp">
+
+  <div ng-controller="studentCtrl">
+    <h3>Student Info</h3>
+    <p>Name: {{ student.name }}</p>
+    <p>Age: {{ student.age }}</p>
+  </div>
+
+  <div ng-controller="myCtrl">
+    <input type="text" ng-model="name" ng-change="updateMessage()" />
+    <p>{{ message }}</p>
+  </div>
+
+  <script>
+    const app = angular.module("myApp", []);
+    
+    app.controller("myCtrl", function ($scope) {
+      $scope.name = "";
+      $scope.message = "";
+
+      $scope.updateMessage = function () {
+        $scope.message = $scope.name;
+      };
+    });
+
+    app.controller("studentCtrl", function ($scope) {
+      $scope.student = { name: "Amit", age: 20 };
+    });
+  </script>
+
+</body>
+</html>
