@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bankApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bank Account System</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        width: 600px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+      }
+      input {
+        padding: 6px;
+        margin: 5px;
+      }
+      button {
+        padding: 6px 12px;
+        margin: 5px;
+      }
+      table {
+        width: 100%;
+        margin-top: 15px;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: center;
+      }
+      .deposit {
+        color: green;
+      }
+      .withdraw {
+        color: red;
+      }
+      .error {
+        color: red;
+      }
+      .balance {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="bankCtrl">
+    <div class="container">
+      <h2>Bank Account Management</h2>
+
+      <!-- CREATE ACCOUNT -->
+      <input
+        type="text"
+        ng-model="accountName"
+        placeholder="Enter Account Holder Name"
+      />
+      <button ng-click="createAccount()">Create Account</button>
+
+      <h3 ng-if="accountCreated">Welcome, {{accountHolder}}</h3>
+
+      <!-- TRANSACTION SECTION -->
+      <div ng-show="accountCreated">
+        <input type="number" ng-model="amount" placeholder="Enter Amount" />
+
+        <button ng-click="deposit()">Deposit</button>
+        <button ng-click="withdraw()">Withdraw</button>
+
+        <p class="error" ng-if="errorMessage">{{errorMessage}}</p>
+
+        <p class="balance">Current Balance: ₹ {{balance}}</p>
+
+        <h3 ng-show="transactions.length>0">Transaction History</h3>
+
+        <table ng-show="transactions.length>0">
+          <tr>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Balance After</th>
+          </tr>
+
+          <tr ng-repeat="t in transactions">
+            <td
+              ng-class="{'deposit': t.type=='Deposit',
+               'withdraw': t.type=='Withdraw'}"
+            >
+              {{t.type}}
+            </td>
+            <td>{{t.amount}}</td>
+            <td>{{t.balance}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      var app = angular.module("bankApp", []);
+
+      app.controller("bankCtrl", function ($scope) {
+        $scope.balance = 0;
+        $scope.transactions = [];
+        $scope.accountCreated = false;
+
+        $scope.createAccount = function () {
+          if ($scope.accountName) {
+            $scope.accountHolder = $scope.accountName;
+            $scope.accountCreated = true;
+            $scope.accountName = "";
+          }
+        };
+
+        $scope.deposit = function () {
+          $scope.errorMessage = "";
+
+          if ($scope.amount > 0) {
+            $scope.balance += Number($scope.amount);
+
+            $scope.transactions.push({
+              type: "Deposit",
+              amount: $scope.amount,
+              balance: $scope.balance,
+            });
+
+            $scope.amount = "";
+          }
+        };
+
+        $scope.withdraw = function () {
+          $scope.errorMessage = "";
+
+          if ($scope.amount > $scope.balance) {
+            $scope.errorMessage = "Insufficient Balance!";
+            return;
+          }
+
+          if ($scope.amount > 0) {
+            $scope.balance -= Number($scope.amount);
+
+            $scope.transactions.push({
+              type: "Withdraw",
+              amount: $scope.amount,
+              balance: $scope.balance,
+            });
+
+            $scope.amount = "";
+          }
+        };
+      });
+    </script>
+  </body>
+</html>

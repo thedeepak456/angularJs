@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="studentApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student List Manager</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        width: 650px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+      }
+      input {
+        padding: 6px;
+        margin: 5px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: center;
+      }
+      button {
+        padding: 6px 12px;
+      }
+      .highlight {
+        background-color: #d4edda;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="studentCtrl">
+    <div class="container">
+      <h2>Student List Manager</h2>
+
+      <input type="text" ng-model="studentName" placeholder="Enter Name" />
+      <input type="number" ng-model="studentAge" placeholder="Enter Age" />
+      <input type="text" ng-model="studentCourse" placeholder="Enter Course" />
+
+      <button ng-click="addStudent()">Add Student</button>
+
+      <br /><br />
+
+      <input type="text" ng-model="searchText" placeholder="Search Student" />
+
+      <h3 ng-show="students.length > 0">
+        Total Students: {{ students.length }}
+      </h3>
+
+      <table ng-show="students.length > 0">
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Course</th>
+          <th>Action</th>
+        </tr>
+
+        <tr
+          ng-repeat="s in students | filter:searchText"
+          ng-class="{'highlight': s.age >= 18}"
+        >
+          <td>{{s.name}}</td>
+          <td>{{s.age}}</td>
+          <td>{{s.course}}</td>
+          <td>
+            <button ng-click="removeStudent($index)">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <script>
+      var app = angular.module("studentApp", []);
+
+      app.controller("studentCtrl", function ($scope) {
+        $scope.students = [];
+
+        $scope.addStudent = function () {
+          if ($scope.studentName && $scope.studentAge && $scope.studentCourse) {
+            $scope.students.push({
+              name: $scope.studentName,
+              age: $scope.studentAge,
+              course: $scope.studentCourse,
+            });
+
+            $scope.studentName = "";
+            $scope.studentAge = "";
+            $scope.studentCourse = "";
+          }
+        };
+
+        $scope.removeStudent = function (index) {
+          $scope.students.splice(index, 1);
+        };
+      });
+    </script>
+  </body>
+</html>

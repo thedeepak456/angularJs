@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="schoolApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>School Management App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        width: 900px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+      }
+      input {
+        padding: 5px;
+        margin: 5px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: center;
+      }
+      .pass {
+        color: green;
+      }
+      .fail {
+        color: red;
+      }
+      .dist {
+        color: blue;
+        font-weight: bold;
+      }
+      .highlight {
+        background: #d4edda;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="schoolCtrl">
+    <div class="container">
+      <h2>School Management System</h2>
+
+      <!-- ADD STUDENT FORM -->
+      <h3>Add Student</h3>
+
+      <input type="text" ng-model="student.name" placeholder="Name" />
+      <input type="number" ng-model="student.hindi" placeholder="Hindi" />
+      <input type="number" ng-model="student.english" placeholder="English" />
+      <input type="number" ng-model="student.math" placeholder="Math" />
+      <input type="number" ng-model="student.science" placeholder="Science" />
+      <input type="number" ng-model="student.sst" placeholder="SST" />
+
+      <button ng-click="addStudent()">Add Student</button>
+
+      <br /><br />
+
+      <input type="text" ng-model="searchText" placeholder="Search Student" />
+
+      <h3 ng-show="students.length>0">Total Students: {{students.length}}</h3>
+
+      <!-- STUDENT TABLE -->
+      <table ng-show="students.length>0">
+        <tr>
+          <th>Name</th>
+          <th>Total</th>
+          <th>%</th>
+          <th>Grade</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+
+        <tr
+          ng-repeat="s in students | filter:searchText"
+          ng-class="{'highlight': s.percentage>=75}"
+        >
+          <td>{{s.name}}</td>
+          <td>{{s.total}}</td>
+          <td>{{s.percentage | number:2}}%</td>
+
+          <td>
+            <span ng-if="s.percentage>=90">A+</span>
+            <span ng-if="s.percentage>=80 && s.percentage<90">A</span>
+            <span ng-if="s.percentage>=70 && s.percentage<80">B</span>
+            <span ng-if="s.percentage>=60 && s.percentage<70">C</span>
+            <span ng-if="s.percentage>=40 && s.percentage<60">D</span>
+            <span ng-if="s.percentage<40">F</span>
+          </td>
+
+          <td>
+            <span ng-if="s.percentage>=40" class="pass">Pass</span>
+            <span ng-if="s.percentage<40" class="fail">Fail</span>
+          </td>
+
+          <td>
+            <button ng-click="removeStudent($index)">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <script>
+      var app = angular.module("schoolApp", []);
+
+      app.controller("schoolCtrl", function ($scope) {
+        $scope.students = [];
+
+        $scope.addStudent = function () {
+          if (
+            $scope.student.name &&
+            $scope.student.hindi != null &&
+            $scope.student.english != null &&
+            $scope.student.math != null &&
+            $scope.student.science != null &&
+            $scope.student.sst != null
+          ) {
+            var total =
+              $scope.student.hindi +
+              $scope.student.english +
+              $scope.student.math +
+              $scope.student.science +
+              $scope.student.sst;
+
+            var percentage = (total / 500) * 100;
+
+            $scope.students.push({
+              name: $scope.student.name,
+              total: total,
+              percentage: percentage,
+            });
+
+            $scope.student = {};
+          }
+        };
+
+        $scope.removeStudent = function (index) {
+          $scope.students.splice(index, 1);
+        };
+      });
+    </script>
+  </body>
+</html>

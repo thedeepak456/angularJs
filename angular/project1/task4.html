@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="trafficApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Traffic Light Simulation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        text-align: center;
+        background-color: #f4f4f4;
+        padding-top: 30px;
+      }
+
+      .light-box {
+        width: 120px;
+        background: #333;
+        padding: 15px;
+        border-radius: 20px;
+        margin: auto;
+      }
+
+      .light {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #555;
+        margin: 10px auto;
+      }
+
+      .red {
+        background: red !important;
+      }
+      .yellow {
+        background: yellow !important;
+      }
+      .green {
+        background: green !important;
+      }
+
+      button {
+        padding: 8px 15px;
+        margin: 5px;
+      }
+
+      h2 {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="trafficCtrl">
+    <h2>Traffic Light Simulation</h2>
+
+    <div class="light-box">
+      <div class="light" ng-class="{'red': current=='red'}"></div>
+      <div class="light" ng-class="{'yellow': current=='yellow'}"></div>
+      <div class="light" ng-class="{'green': current=='green'}"></div>
+    </div>
+
+    <br />
+
+    <button ng-click="setLight('red')">Red</button>
+    <button ng-click="setLight('yellow')">Yellow</button>
+    <button ng-click="setLight('green')">Green</button>
+    <button ng-click="autoChange()">Auto</button>
+
+    <!-- MESSAGE USING ng-switch -->
+    <h2 ng-switch="current">
+      <span ng-switch-when="red">Stop ✋</span>
+      <span ng-switch-when="yellow">Ready ⚠</span>
+      <span ng-switch-when="green">Go 🚗</span>
+      <span ng-switch-default>Select Light</span>
+    </h2>
+
+    <script>
+      var app = angular.module("trafficApp", []);
+
+      app.controller("trafficCtrl", function ($scope, $interval) {
+        $scope.current = "";
+
+        $scope.setLight = function (color) {
+          $scope.current = color;
+        };
+
+        var colors = ["red", "yellow", "green"];
+        var index = 0;
+        var autoRunning = false;
+        var intervalPromise;
+
+        $scope.autoChange = function () {
+          if (autoRunning) {
+            $interval.cancel(intervalPromise);
+            autoRunning = false;
+            return;
+          }
+
+          autoRunning = true;
+
+          intervalPromise = $interval(function () {
+            $scope.current = colors[index];
+            index = (index + 1) % 3;
+          }, 2000);
+        };
+      });
+    </script>
+  </body>
+</html>

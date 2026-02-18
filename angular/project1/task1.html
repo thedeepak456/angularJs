@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="resultApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student Result Management</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        width: 400px;
+        margin: auto;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+      }
+      input {
+        width: 100%;
+        padding: 6px;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 8px 15px;
+        margin-top: 10px;
+      }
+      .pass {
+        color: green;
+      }
+      .fail {
+        color: red;
+      }
+      .distinction {
+        color: blue;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="resultCtrl">
+    <div class="container">
+      <h2>Student Result System</h2>
+
+      <form name="resultForm">
+        <input
+          type="text"
+          placeholder="Enter Name"
+          ng-model="student.name"
+          required
+        />
+
+        <input
+          type="number"
+          placeholder="Hindi"
+          ng-model="student.hindi"
+          min="0"
+          max="100"
+          required
+        />
+
+        <input
+          type="number"
+          placeholder="English"
+          ng-model="student.english"
+          min="0"
+          max="100"
+          required
+        />
+
+        <input
+          type="number"
+          placeholder="Maths"
+          ng-model="student.math"
+          min="0"
+          max="100"
+          required
+        />
+
+        <input
+          type="number"
+          placeholder="Science"
+          ng-model="student.science"
+          min="0"
+          max="100"
+          required
+        />
+
+        <input
+          type="number"
+          placeholder="SST"
+          ng-model="student.sst"
+          min="0"
+          max="100"
+          required
+        />
+
+        <button
+          type="button"
+          ng-click="calculate()"
+          ng-disabled="resultForm.$invalid"
+        >
+          Calculate
+        </button>
+
+        <button type="button" ng-click="reset()">Reset</button>
+      </form>
+
+      <!-- RESULT SECTION -->
+      <div ng-show="showResult">
+        <h3>Name: {{student.name}}</h3>
+
+        <h3>Total Marks: {{total}}</h3>
+
+        <h3>Percentage: {{percentage | number:2}}%</h3>
+
+        <!-- PASS / FAIL -->
+        <p ng-if="percentage >= 40" class="pass">You Passed ✅</p>
+
+        <p ng-if="percentage < 40" class="fail">You Failed ❌</p>
+
+        <!-- DISTINCTION -->
+        <p ng-if="percentage >= 75" class="distinction">🎉 Distinction!</p>
+
+        <!-- GRADE -->
+        <h3>
+          Grade:
+          <span ng-if="percentage >= 90">A+</span>
+          <span ng-if="percentage >= 80 && percentage < 90">A</span>
+          <span ng-if="percentage >= 70 && percentage < 80">B</span>
+          <span ng-if="percentage >= 60 && percentage < 70">C</span>
+          <span ng-if="percentage >= 40 && percentage < 60">D</span>
+          <span ng-if="percentage < 40">F</span>
+        </h3>
+      </div>
+    </div>
+
+    <script>
+      var app = angular.module("resultApp", []);
+
+      app.controller("resultCtrl", function ($scope) {
+        $scope.showResult = false;
+
+        $scope.calculate = function () {
+          $scope.total =
+            $scope.student.hindi +
+            $scope.student.english +
+            $scope.student.math +
+            $scope.student.science +
+            $scope.student.sst;
+
+          $scope.percentage = ($scope.total / 500) * 100;
+
+          $scope.showResult = true;
+        };
+
+        $scope.reset = function () {
+          $scope.student = {};
+          $scope.total = 0;
+          $scope.percentage = 0;
+          $scope.showResult = false;
+        };
+      });
+    </script>
+  </body>
+</html>

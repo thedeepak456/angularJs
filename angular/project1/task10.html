@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html ng-app="collegeApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>College Management System</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+      }
+      nav button {
+        margin: 5px;
+        padding: 8px 12px;
+      }
+      input,
+      select {
+        margin: 5px;
+        padding: 5px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #000;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: center;
+      }
+      .pass {
+        color: green;
+      }
+      .fail {
+        color: red;
+      }
+      .highlight {
+        background: #d4edda;
+      }
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="mainCtrl">
+    <div class="container">
+      <!-- LOGIN SECTION -->
+      <div ng-show="!isLoggedIn">
+        <h2>Login</h2>
+        <input type="text" ng-model="login.username" placeholder="Username" />
+        <input
+          type="password"
+          ng-model="login.password"
+          placeholder="Password"
+        />
+        <button ng-click="loginUser()">Login</button>
+        <p class="error" ng-if="loginError">{{loginError}}</p>
+      </div>
+
+      <!-- MAIN SYSTEM -->
+      <div ng-show="isLoggedIn">
+        <h2>College Management System</h2>
+
+        <nav>
+          <button ng-click="section='dashboard'">Dashboard</button>
+          <button ng-click="section='students'">Students</button>
+          <button ng-click="section='courses'">Courses</button>
+          <button ng-click="section='logout'">Logout</button>
+        </nav>
+
+        <!-- DASHBOARD -->
+        <div ng-show="section=='dashboard'">
+          <h3>Dashboard</h3>
+          <p>Total Students: {{students.length}}</p>
+          <p>Total Courses: {{courses.length}}</p>
+          <p>Total Revenue: ₹ {{getTotalRevenue()}}</p>
+        </div>
+
+        <!-- STUDENT MANAGEMENT -->
+        <div ng-show="section=='students'">
+          <h3>Add Student</h3>
+
+          <input type="text" ng-model="newStudent.name" placeholder="Name" />
+          <input type="number" ng-model="newStudent.age" placeholder="Age" />
+
+          <select
+            ng-model="newStudent.course"
+            ng-options="c.name for c in courses"
+          >
+            <option value="">Select Course</option>
+          </select>
+
+          <input
+            type="number"
+            ng-model="newStudent.hindi"
+            placeholder="Hindi"
+          />
+          <input
+            type="number"
+            ng-model="newStudent.english"
+            placeholder="English"
+          />
+          <input type="number" ng-model="newStudent.math" placeholder="Math" />
+
+          <input
+            type="number"
+            ng-model="newStudent.feePaid"
+            placeholder="Fee Paid"
+          />
+
+          <button ng-click="addStudent()">Add Student</button>
+
+          <br /><br />
+          <input
+            type="text"
+            ng-model="searchText"
+            placeholder="Search Student"
+          />
+
+          <table ng-show="students.length>0">
+            <tr>
+              <th>Name</th>
+              <th>Course</th>
+              <th>%</th>
+              <th>Grade</th>
+              <th>Status</th>
+              <th>Fee Due</th>
+              <th>Action</th>
+            </tr>
+
+            <tr
+              ng-repeat="s in students | filter:searchText"
+              ng-class="{'highlight': s.percentage>=75}"
+            >
+              <td>{{s.name}}</td>
+              <td>{{s.course.name}}</td>
+              <td>{{s.percentage | number:2}}%</td>
+              <td>{{s.grade}}</td>
+              <td>
+                <span ng-if="s.percentage>=40" class="pass">Pass</span>
+                <span ng-if="s.percentage<40" class="fail">Fail</span>
+              </td>
+              <td>₹ {{s.course.fee - s.feePaid}}</td>
+              <td>
+                <button ng-click="deleteStudent($index)">Delete</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- COURSE MANAGEMENT -->
+        <div ng-show="section=='courses'">
+          <h3>Add Course</h3>
+          <input
+            type="text"
+            ng-model="newCourse.name"
+            placeholder="Course Name"
+          />
+          <input
+            type="number"
+            ng-model="newCourse.fee"
+            placeholder="Course Fee"
+          />
+          <button ng-click="addCourse()">Add Course</button>
+
+          <table ng-show="courses.length>0">
+            <tr>
+              <th>Course Name</th>
+              <th>Fee</th>
+              <th>Action</th>
+            </tr>
+            <tr ng-repeat="c in courses">
+              <td>{{c.name}}</td>
+              <td>₹ {{c.fee}}</td>
+              <td><button ng-click="deleteCourse($index)">Delete</button></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var app = angular.module("collegeApp", []);
+
+      app.controller("mainCtrl", function ($scope) {
+        /* LOGIN */
+        $scope.isLoggedIn = false;
+        $scope.section = "dashboard";
+
+        $scope.loginUser = function () {
+          if (
+            $scope.login.username == "admin" &&
+            $scope.login.password == "123"
+          ) {
+            $scope.isLoggedIn = true;
+            $scope.section = "dashboard";
+            $scope.loginError = "";
+          } else {
+            $scope.loginError = "Invalid Credentials";
+          }
+        };
+
+        /* COURSES */
+        $scope.courses = [
+          { name: "BCA", fee: 50000 },
+          { name: "BBA", fee: 60000 },
+        ];
+
+        $scope.addCourse = function () {
+          if ($scope.newCourse.name && $scope.newCourse.fee) {
+            $scope.courses.push({
+              name: $scope.newCourse.name,
+              fee: $scope.newCourse.fee,
+            });
+            $scope.newCourse = {};
+          }
+        };
+
+        $scope.deleteCourse = function (index) {
+          $scope.courses.splice(index, 1);
+        };
+
+        /* STUDENTS */
+        $scope.students = [];
+
+        $scope.addStudent = function () {
+          if (
+            $scope.newStudent.name &&
+            $scope.newStudent.course &&
+            $scope.newStudent.hindi != null &&
+            $scope.newStudent.english != null &&
+            $scope.newStudent.math != null
+          ) {
+            var total =
+              Number($scope.newStudent.hindi) +
+              Number($scope.newStudent.english) +
+              Number($scope.newStudent.math);
+
+            var percentage = (total / 300) * 100;
+
+            var grade = "";
+            if (percentage >= 90) grade = "A+";
+            else if (percentage >= 80) grade = "A";
+            else if (percentage >= 70) grade = "B";
+            else if (percentage >= 60) grade = "C";
+            else if (percentage >= 40) grade = "D";
+            else grade = "F";
+
+            $scope.students.push({
+              name: $scope.newStudent.name,
+              age: $scope.newStudent.age,
+              course: $scope.newStudent.course,
+              percentage: percentage,
+              grade: grade,
+              feePaid: $scope.newStudent.feePaid || 0,
+            });
+
+            $scope.newStudent = {};
+          }
+        };
+
+        $scope.deleteStudent = function (index) {
+          $scope.students.splice(index, 1);
+        };
+
+        /* DASHBOARD */
+        $scope.getTotalRevenue = function () {
+          var total = 0;
+          angular.forEach($scope.students, function (s) {
+            total += Number(s.feePaid);
+          });
+          return total;
+        };
+      });
+    </script>
+  </body>
+</html>

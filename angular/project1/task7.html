@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="loginApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login Form Validation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        background-color: #f4f4f4;
+        padding: 40px;
+      }
+      .container {
+        width: 350px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+      }
+      input {
+        width: 100%;
+        padding: 6px;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 8px 15px;
+        width: 100%;
+      }
+      .error {
+        color: red;
+        font-size: 14px;
+      }
+      .success {
+        color: green;
+        font-weight: bold;
+        margin-top: 15px;
+      }
+      .invalid {
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="loginCtrl">
+    <div class="container">
+      <h2>Login Form</h2>
+
+      <form name="loginForm" novalidate>
+        <input
+          type="text"
+          name="username"
+          placeholder="Enter Username"
+          ng-model="user.username"
+          ng-required="true"
+          ng-class="{'invalid': loginForm.username.$touched && loginForm.username.$invalid}"
+        />
+
+        <p
+          class="error"
+          ng-show="loginForm.username.$touched && loginForm.username.$invalid"
+        >
+          Username is required
+        </p>
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter Password"
+          ng-model="user.password"
+          ng-required="true"
+          ng-minlength="6"
+          ng-class="{'invalid': loginForm.password.$touched && loginForm.password.$invalid}"
+        />
+
+        <p
+          class="error"
+          ng-show="loginForm.password.$touched && loginForm.password.$error.required"
+        >
+          Password is required
+        </p>
+
+        <p
+          class="error"
+          ng-show="loginForm.password.$touched && loginForm.password.$error.minlength"
+        >
+          Password must be at least 6 characters
+        </p>
+
+        <button
+          type="button"
+          ng-click="login()"
+          ng-disabled="loginForm.$invalid"
+        >
+          Login
+        </button>
+      </form>
+
+      <p class="success" ng-if="successMessage">{{successMessage}}</p>
+    </div>
+
+    <script>
+      var app = angular.module("loginApp", []);
+
+      app.controller("loginCtrl", function ($scope) {
+        $scope.user = {};
+        $scope.successMessage = "";
+
+        $scope.login = function () {
+          if (
+            $scope.user.username === "admin" &&
+            $scope.user.password === "123456"
+          ) {
+            $scope.successMessage = "Login Successful ✅";
+          } else {
+            $scope.successMessage = "Invalid Credentials ❌";
+          }
+        };
+      });
+    </script>
+  </body>
+</html>

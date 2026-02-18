@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="billingApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Product Billing System</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        width: 600px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+      }
+      input {
+        padding: 6px;
+        margin: 5px;
+      }
+      table {
+        width: 100%;
+        margin-top: 15px;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: center;
+      }
+      button {
+        padding: 6px 12px;
+        margin: 5px;
+      }
+      .total-section {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+      .discount {
+        color: green;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="billingCtrl">
+    <div class="container">
+      <h2>Product Billing System</h2>
+
+      <input type="text" ng-model="productName" placeholder="Product Name" />
+      <input type="number" ng-model="price" placeholder="Price" />
+      <input type="number" ng-model="quantity" placeholder="Quantity" />
+
+      <button ng-click="addProduct()">Add Product</button>
+
+      <table ng-show="products.length > 0">
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+          <th>Action</th>
+        </tr>
+
+        <tr ng-repeat="item in products">
+          <td>{{item.name}}</td>
+          <td>{{item.price}}</td>
+          <td>{{item.qty}}</td>
+          <td>{{item.price * item.qty}}</td>
+          <td>
+            <button ng-click="removeProduct($index)">Remove</button>
+          </td>
+        </tr>
+      </table>
+
+      <div class="total-section" ng-show="products.length > 0">
+        <p>Subtotal: {{getSubtotal()}}</p>
+
+        <p>GST (10%): {{getGST()}}</p>
+
+        <p class="discount" ng-if="getSubtotal() >= 5000">
+          Discount (5% Applied)
+        </p>
+
+        <p>Final Total: {{getFinalTotal()}}</p>
+      </div>
+    </div>
+
+    <script>
+      var app = angular.module("billingApp", []);
+
+      app.controller("billingCtrl", function ($scope) {
+        $scope.products = [];
+
+        $scope.addProduct = function () {
+          if ($scope.productName && $scope.price && $scope.quantity) {
+            $scope.products.push({
+              name: $scope.productName,
+              price: $scope.price,
+              qty: $scope.quantity,
+            });
+
+            $scope.productName = "";
+            $scope.price = "";
+            $scope.quantity = "";
+          }
+        };
+
+        $scope.removeProduct = function (index) {
+          $scope.products.splice(index, 1);
+        };
+
+        $scope.getSubtotal = function () {
+          var total = 0;
+          angular.forEach($scope.products, function (item) {
+            total += item.price * item.qty;
+          });
+          return total;
+        };
+
+        $scope.getGST = function () {
+          return $scope.getSubtotal() * 0.1;
+        };
+
+        $scope.getFinalTotal = function () {
+          var subtotal = $scope.getSubtotal();
+          var gst = $scope.getGST();
+          var discount = 0;
+
+          if (subtotal >= 5000) {
+            discount = subtotal * 0.05;
+          }
+
+          return subtotal + gst - discount;
+        };
+      });
+    </script>
+  </body>
+</html>

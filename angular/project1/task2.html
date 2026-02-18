@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="calcApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AngularJS Calculator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        width: 400px;
+        margin: auto;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 6px;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 8px 15px;
+        margin-top: 5px;
+        margin-right: 5px;
+      }
+      .error {
+        color: red;
+      }
+      .result {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      ul {
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="calcCtrl">
+    <div class="container">
+      <h2>Simple Calculator</h2>
+
+      <input type="number" ng-model="num1" placeholder="Enter First Number" />
+      <input type="number" ng-model="num2" placeholder="Enter Second Number" />
+
+      <select ng-model="operation">
+        <option value="add">Addition</option>
+        <option value="sub">Subtraction</option>
+        <option value="mul">Multiplication</option>
+        <option value="div">Division</option>
+      </select>
+
+      <button ng-click="calculate()">Calculate</button>
+      <button ng-click="clear()">Clear</button>
+
+      <!-- ERROR MESSAGE -->
+      <p class="error" ng-if="errorMessage">{{errorMessage}}</p>
+
+      <!-- RESULT -->
+      <p class="result" ng-if="result !== null">Result: {{result}}</p>
+
+      <!-- HISTORY -->
+      <h3 ng-show="history.length > 0">Calculation History</h3>
+      <ul>
+        <li ng-repeat="item in history">{{item}}</li>
+      </ul>
+    </div>
+
+    <script>
+      var app = angular.module("calcApp", []);
+
+      app.controller("calcCtrl", function ($scope) {
+        $scope.history = [];
+        $scope.result = null;
+        $scope.operation = "add";
+
+        $scope.calculate = function () {
+          $scope.errorMessage = "";
+          $scope.result = null;
+
+          if ($scope.num1 == null || $scope.num2 == null) {
+            $scope.errorMessage = "Please enter both numbers!";
+            return;
+          }
+
+          switch ($scope.operation) {
+            case "add":
+              $scope.result = $scope.num1 + $scope.num2;
+              break;
+
+            case "sub":
+              $scope.result = $scope.num1 - $scope.num2;
+              break;
+
+            case "mul":
+              $scope.result = $scope.num1 * $scope.num2;
+              break;
+
+            case "div":
+              if ($scope.num2 == 0) {
+                $scope.errorMessage = "Cannot divide by zero!";
+                return;
+              }
+              $scope.result = $scope.num1 / $scope.num2;
+              break;
+          }
+        };
+
+        $scope.clear = function () {
+          $scope.num1 = null;
+          $scope.num2 = null;
+          $scope.result = null;
+          $scope.errorMessage = "";
+        };
+      });
+    </script>
+  </body>
+</html>

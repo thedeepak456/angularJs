@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS Practical Tasks</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f9;
+        }
+
+        .container {
+            width: 95%;
+            margin: 30px auto;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            flex: 1 1 calc(33.333% - 20px); /* Improved responsiveness: use flex-basis for better flex behavior */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-width: 280px; /* Ensure cards don't get too narrow */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: #eef4ff;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .card ul {
+            padding-left: 18px;
+            font-size: 14px;
+        }
+
+        .btn {
+            margin-top: 10px;
+            padding: 8px;
+            background: #3498db;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background: #217dbb;
+        }
+
+        @media (max-width: 992px) {
+            .card { flex: 1 1 calc(50% - 20px); } /* 2 per row on medium screens */
+        }
+
+        @media (max-width: 600px) {
+            .card { flex: 1 1 100%; } /* 1 per row on small screens */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+
+        <!-- Task 1 -->
+        <div class="card">
+            <div>
+                <h3>Task 1: Student Result Management</h3>
+                <p><b>Question:</b> Create a Student Result Management System using AngularJS.</p>
+                <ul>
+                    <li>Take student name and 5 subject marks.</li>
+                    <li>Calculate total and percentage.</li>
+                    <li>Display Pass/Fail (≥40%).</li>
+                    <li>Display Grade.</li>
+                    <li>Show Distinction (≥75%).</li>
+                    <li>Include Reset button.</li>
+                </ul>
+            </div>
+            <a href="task1.html" class="btn">Open Task</a>
+        </div>
+
+        <!-- Task 2 -->
+        <div class="card">
+            <div>
+                <h3>Task 2: Simple Calculator</h3>
+                <p><b>Question:</b> Create a Simple Calculator using AngularJS.</p>
+                <ul>
+                    <li>Take two numbers.</li>
+                    <li>Select operation (Add, Subtract, Multiply, Divide).</li>
+                    <li>Display result.</li>
+                    <li>Show error if missing input.</li>
+                    <li>Show divide by zero error.</li>
+                    <li>Include Clear button.</li>
+                </ul>
+            </div>
+            <a href="task2.html" class="btn">Open Task</a>
+        </div>
+
+        <!-- Task 3 -->
+        <div class="card">
+            <div>
+                <h3>Task 3: To-Do List App</h3>
+                <ul>
+                    <li>Add new tasks.</li>
+                    <li>Mark as completed.</li>
+                    <li>Delete tasks.</li>
+                    <li>Show total tasks.</li>
+                    <li>Hide/Show completed tasks.</li>
+                </ul>
+            </div>
+            <a href="task3.html" class="btn">Open Task</a>
+        </div>
+
+        <!-- Task 4 -->
+        <div class="card">
+            <div>
+                <h3>Task 4: Traffic Light Simulation</h3>
+                <ul>
+                    <li>Display Red, Yellow, Green lights.</li>
+                    <li>Manual switching.</li>
+                    <li>Show message (Stop, Ready, Go).</li>
+                    <li>Auto mode every 2 seconds.</li>
+                </ul>
+            </div>
+            <a href="task4.html" class="btn">Open Task</a>
+        </div>
+
+        <!-- Task 5 -->
+        <div class="card">
+            <div>
+                <h3>Task 5: Product Billing System</h3>
+                <ul>
+                    <li>Add product name, price, quantity.</li>
+                    <li>Display in table.</li>
+                    <li>Calculate Subtotal.</li>
+                    <li>Add 10% GST.</li>
+                    <li>5% discount if subtotal ≥ 5000.</li>
+                    <li>Show Final Total.</li>
+                </ul>
+            </div>
+            <a href="task5.html" class="btn">Open Task</a>
+        </div>
+
+        <!-- Task 6 -->
+        <div class="card">
+            <div>
+                <h3>Task 6: Student List Manager</h3>
+                <ul>
+                    <li>Add student name, age, course.</li>
+                    <li>Display in table.</li>
+                    <li>Highlight age ≥18.</li>
+                    <li>Search student.</li>
+                    <li>Delete student.</li>
+                </ul>
+            </div>
+            <a href="task6.html" class="btn">Open Task</a>
+        </div>
+
+        <!-- Task 7 -->
+        <div class="card">
+            <div>
+                <h3>Task 7: Login Form Validation</h3>
+                <ul>
+                    <li>Username required.</li>
+                    <li>Password min 6 characters.</li>
+                    <li>Show validation errors.</li>
+                    <li>Success if admin / 123456.</li>
+                </ul>
+            </div>
+            <a href="task7.html" class="btn">Open Task</a>
+        </div>
+
+        <!-- Task 8 -->
+        <div class="card">
+            <div>
+                <h3>Task 8: School Management System</h3>
+                <ul>
+                    <li>Add student with 5 subject marks.</li>
+                    <li>Calculate total & percentage.</li>
+                    <li>Assign grade.</li>
+                    <li>Show Pass/Fail.</li>
+                    <li>Search & delete student.</li>
+                </ul>
+            </div>
+            <a href="task8.html" class="btn">Open Task</a>
+        </div>
+
+        <!-- Task 9 -->
+        <div class="card">
+            <div>
+                <h3>Task 9: Bank Account Management</h3>
+                <ul>
+                    <li>Create account.</li>
+                    <li>Deposit & Withdraw money.</li>
+                    <li>Prevent insufficient balance.</li>
+                    <li>Show transaction history.</li>
+                    <li>Display balance.</li>
+                </ul>
+            </div>
+            <a href="task9.html" class="btn">Open Task</a>
+        </div>
+
+        <!-- Task 10 -->
+        <div class="card">
+            <div>
+                <h3>Task 10: College Management System</h3>
+                <ul>
+                    <li>Login system (admin / 123).</li>
+                    <li>Course management.</li>
+                    <li>Student management.</li>
+                    <li>Dashboard (Students, Courses, Revenue).</li>
+                </ul>
+            </div>
+            <a href="task10.html" class="btn">Open Task</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

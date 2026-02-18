@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="todoApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AngularJS To-Do App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial;
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        width: 400px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px gray;
+      }
+      input {
+        width: 100%;
+        padding: 6px;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 6px 12px;
+        margin-right: 5px;
+      }
+      .completed {
+        text-decoration: line-through;
+        color: gray;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="todoCtrl">
+    <div class="container">
+      <h2>To-Do List App</h2>
+
+      <input type="text" ng-model="newTask" placeholder="Enter new task" />
+
+      <button ng-click="addTask()">Add Task</button>
+      <button ng-click="toggleCompleted()">
+        {{ hideCompleted ? 'Show Completed' : 'Hide Completed' }}
+      </button>
+
+      <h3 ng-show="tasks.length > 0">Total Tasks: {{ tasks.length }}</h3>
+
+      <ul>
+        <li
+          ng-repeat="task in tasks"
+          ng-show="!hideCompleted || !task.completed"
+        >
+          <span ng-class="{'completed': task.completed}"> {{task.name}} </span>
+
+          <button ng-click="markCompleted(task)">
+            {{ task.completed ? 'Undo' : 'Done' }}
+          </button>
+
+          <button ng-click="deleteTask($index)">Delete</button>
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      var app = angular.module("todoApp", []);
+
+      app.controller("todoCtrl", function ($scope) {
+        $scope.tasks = [];
+        $scope.hideCompleted = false;
+
+        $scope.addTask = function () {
+          if ($scope.newTask && $scope.newTask.trim() !== "") {
+            $scope.tasks.push({
+              name: $scope.newTask,
+              completed: false,
+            });
+
+            $scope.newTask = "";
+          }
+        };
+
+        $scope.deleteTask = function (index) {
+          $scope.tasks.splice(index, 1);
+        };
+
+        $scope.markCompleted = function (task) {
+          task.completed = !task.completed;
+        };
+
+        $scope.toggleCompleted = function () {
+          $scope.hideCompleted = !$scope.hideCompleted;
+        };
+      });
+    </script>
+  </body>
+</html>
