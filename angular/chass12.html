@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <title>Filter</title>
+</head>
+<body>
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <p>Original: {{ name }}</p>
+        <p>Uppercase: {{ name | uppercase }}</p>
+        <p>Lowercase: {{ name | lowercase }}</p>
+        <p>Currency: {{ amount | currency:"₹" }}</p>
+        <p>Date: {{ today | date:"yyyy" }}</p>
+      </div>
+      <script>
+        var app = angular.module("myApp", []);
+        app.controller("myCtrl", function($scope) {
+          $scope.name = "Rahul Verma";
+          $scope.amount = 3500;
+          $scope.today = new Date(2024,02,23,11,34,33);
+        });
+      </script>      
+</body>
+</html>
