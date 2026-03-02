@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <form name="userForm" ng-submit="submitForm()">
+          <label>Username:</label>
+          <input type="text" ng-model="username" ng-required="true">
+          <span ng-show="userForm.username.$touched && userForm.username.$invalid">
+            Username is required!
+          </span>
+          
+          <br><br>
+          
+          <label>Email:</label>
+          <input type="email" ng-model="email" ng-required="true">
+          <span ng-show="userForm.email.$touched && userForm.email.$invalid">
+            Enter a valid email!
+          </span>
+          
+          <br><br>
+          
+          <label>Password:</label>
+          <input type="password" ng-model="password" ng-minlength="6">
+          <span ng-show="userForm.password.$error.minlength">
+            Minimum 6 characters required!
+          </span>
+          
+          <br><br>
+          
+          <button type="submit">Register</button>
+        </form>
+        
+        <p>Welcome, {{ username }} | Email: {{ email }}</p>
+      </div>
+      
+      <script>
+        var app = angular.module("myApp", []);
+        app.controller("myCtrl", function($scope) {
+            $scope.submitForm = function() {
+                alert("Form submitted by " + $scope.username);
+            };
+        });
+      </script>
+      
+</body>
+</html>
