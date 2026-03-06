@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.js"></script>
+
+    <style>
+      .box {
+        width: 200px;
+        height: 100px;
+        background: red;
+        margin-top: 20px;
+        transition: 0.5s;
+      }
+
+      .ng-hide {
+        opacity: 0;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="myCtrl">
+    <button ng-click="show=!show">Show / Hide</button>
+
+    <div class="box" ng-hide="show"></div>
+
+    <script>
+      var app = angular.module("myApp", ["ngAnimate"]);
+
+      app.controller("myCtrl", function ($scope) {
+        $scope.show = false;
+      });
+    </script>
+  </body>
+</html>

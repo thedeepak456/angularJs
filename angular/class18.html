@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <title>AngularJS Slide Animation</title>
+
+    <!-- AngularJS Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- AngularJS Animate -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.js"></script>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            padding:20px;
+        }
+
+        button{
+            padding:10px 15px;
+            margin-bottom:20px;
+            cursor:pointer;
+        }
+
+        li{
+            list-style:none;
+            background:#4CAF50;
+            color:white;
+            padding:10px;
+            margin:5px 0;
+            width:200px;
+        }
+
+        /* Slide Animation */
+
+        .slide.ng-enter{
+            transition:0.5s;
+            transform:translateX(-100%);
+            opacity:0;
+        }
+
+        .slide.ng-enter-active{
+            transform:translateX(0);
+            opacity:1;
+        }
+
+    </style>
+</head>
+
+<body ng-controller="myCtrl">
+
+<h2>AngularJS Slide Animation Example</h2>
+
+<button ng-click="addItem()">Add Item</button>
+
+<ul>
+    <li class="slide" ng-repeat="item in items">
+        {{item}}
+    </li>
+</ul>
+
+<script>
+
+var app = angular.module("myApp", ["ngAnimate"]);
+
+app.controller("myCtrl", function($scope){
+
+    $scope.items = ["HTML","CSS","JavaScript"];
+
+    $scope.addItem = function(){
+        $scope.items.push("AngularJS");
+    };
+
+});
+
+</script>
+
+</body>
+</html>

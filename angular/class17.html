@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.js"></script>
+
+    <style>
+      .fade {
+        transition: 1s;
+      }
+
+      .fade.ng-enter {
+        opacity: 0;
+      }
+
+      .fade.ng-enter-active {
+        opacity: 1;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="myCtrl">
+    <button ng-click="addItem()">Add Item</button>
+
+    <ul>
+      <li class="fade" ng-repeat="item in items">{{item}}</li>
+    </ul>
+
+    <script>
+      var app = angular.module("myApp", ["ngAnimate"]);
+
+      app.controller("myCtrl", function ($scope) {
+        $scope.items = ["HTML", "CSS"];
+
+        $scope.addItem = function () {
+          $scope.items.push("AngularJS");
+        };
+      });
+    </script>
+  </body>
+</html>
